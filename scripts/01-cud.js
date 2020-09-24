@@ -72,7 +72,7 @@ function testInsertDocument(docs) {
 //     //  Promise 방식
 //     client.connect().then(client => {
 //         const db = client.db("mydb");
-//         db.collection('friends').deleteMany({})
+//         db.collection('friends').deleteMany({}) //  삭제 조건 객체
 //             .then(result => {
 //                 console.log(result.deletedCount, "개의 문서가 삭제");
 //             });
@@ -80,4 +80,25 @@ function testInsertDocument(docs) {
 //         console.error(err);
 //     });
 // }
-//  testDeleteAll(); 
+// testDeleteAll();
+
+//  Update 
+//  SQL : UPDATE table SET col=val, col=val
+//  db.collection.update( { 조건 객체 }, { $set: { 변경할 내용 }})
+function testUpdate(condition, doc) {
+    client.connect().then(client => {
+        const db = client.db("mydb");
+
+        db.collection("friends")
+            .updateMany(condition, { $set: doc }).then(result => {
+                //  console.log(result);
+                console.log(result.result.nModified, 
+                    "개의 문서가 업데이트 ")
+            });
+    })
+};
+
+testUpdate(
+    { name: "마이콜" }, //  조건 name = "마이콜"
+    { job: "무직" }   //  변경 문서의 내용
+)

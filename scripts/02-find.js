@@ -54,4 +54,54 @@ function testFind() {
         });
     });
 }
-testFind(); 
+// testFind();
+
+//  조건절 
+//  SELECT * FROM table WHERE column=...;
+function testFindByName(name) {
+    client.connect().then(client => {
+        const db = client.db("mydb");
+
+        db.collection("friends").find({
+            name: name
+        }).toArray().then(result => {
+            for (let i = 0; i < result.length; i++) {
+                console.log(result[i]);
+            }
+        }).catch(err => {
+            console.error(err);
+        })
+    })
+};
+// testFindByName("고길동");
+
+//  비교 연산자 : $gt(>), $gte(>=), $lt(<), $lte(<=), $ne(!=)
+//  논리 연산자 : $and, $or, $not
+function testFindByCondition(projection, condition) {
+    client.connect().then(client => {
+        const db = client.db("mydb");
+
+        db.collection("friends").find(
+            condition, //  조건
+            projection
+        ).toArray().then(result => {
+            for (let i = 0; i <= result.length; i++) {
+                console.log(result[i]);
+            }
+        })
+    })
+};
+//  projection 객체 : 1이면 표시, 0이면 표시하지 않음
+/*
+testFindByCondition({ name: 1, age: 1, species: 1}, 
+    {
+        // $and:[
+        //     {age: { $gte: 20 }},
+        //     {age: { $lte: 50 }}
+        // ]   //  20세 이상 50세 이하
+        $or: [
+           { age: { $lt: 20 }},
+           { age: { $gt: 50 }}
+       ]
+    });
+*/ 
