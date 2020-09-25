@@ -11,9 +11,11 @@
     <!-- friends <- express로부터 전달 받은 객체 -->
     <ul>
         <% for (let i = 0; i < friends.length; i++) { %>
-            <li><%= friends[i].name %>: 
+            <li><a href="/web/friends/show/<%= friends[i]._id %>">
+                <%= friends[i].name %>: 
                 <%= friends[i].species %>,
                 <%= friends[i].age %>세
+            </a>
             </li>
         <% } %>
     </ul>
